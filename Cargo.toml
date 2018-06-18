@@ -1,0 +1,20 @@
+[package]
+authors = ["Frizi <frizi09@gmail.com>"]
+name = "random-towers"
+version = "0.1.0"
+[dependencies]
+log = "0.4.2"
+serde = "1.0.66"
+
+[dependencies.amethyst]
+path = "./vendor/amethyst"
+features = ["nightly"]
+
+[dependencies.amethyst_animation]
+path = "./vendor/amethyst/amethyst_animation"
+
+[dependencies.amethyst_core]
+path = "./vendor/amethyst/amethyst_core"
+
+[dependencies.amethyst_gltf]
+path = "./vendor/amethyst/amethyst_gltf"

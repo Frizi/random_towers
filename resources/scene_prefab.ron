@@ -1,0 +1,59 @@
+#![enable(implicit_some)]
+Prefab (
+    entities: [
+        (
+            data: (
+                light: (ambient_color: ((0.5, 0.5, 0.5, 0.5))),
+            ),
+        ),
+        (
+            data: (
+                light: (
+                    light: Directional((
+                        color: Rgba(1.0, 1.0, 1.0, 1.0),
+                        intensity: 0.1,
+                        direction: (1.0, -0.2, 0.0),
+                    ))
+                )
+            )
+        ),
+        (
+            data: (
+                transform: (
+                    translation: (x: 5.0, y: -2.0, z: 15.0),
+                ),
+                light: (
+                    light: Point((
+                        intensity: 10.0,
+                        color: (1.0, 1.0, 1.0, 1.0),
+                        radius: 1.0,
+                    )),
+                ),
+            ),
+        ),
+        (
+            data: (
+                transform: (
+                    translation: (x: -5.0, y: 20.0, z: 15.0),
+                ),
+                light: (
+                    light: Point((
+                        intensity: 15.0,
+                        color: (0.5, 1.0, 0.5, 1.0),
+                        radius: 1.0,
+                    )),
+                ),
+            ),
+        ),
+        (
+            data: (
+                transform: (
+                    translation: (x: 0.0, y: -0.2, z: -0.5),
+                ),
+                gltf: File("cache/gltf/question.gltf", GltfSceneFormat, (
+                    load_animations: false,
+                )),
+            ),
+        ),
+    ],
+)
