@@ -55,5 +55,15 @@ Prefab (
                 )),
             ),
         ),
+        (
+            data: (
+                transform: (
+                    translation: (x: 0.0, y: -0.2, z: -0.5),
+                ),
+                gltf: File("cache/gltf/cylinder_stage.gltf", GltfSceneFormat, (
+                    load_animations: false,
+                )),
+            ),
+        ),
     ],
 )
