@@ -3,15 +3,22 @@ authors = ["Frizi <frizi09@gmail.com>"]
 name = "random-towers"
 version = "0.1.0"
 [dependencies]
+derivative = "1.0"
+failure = "0.1.1"
+fern = "0.5.6"
 log = "0.4.2"
 serde = "1.0.66"
+serde_derive = "1.0.66"
 
 [dependencies.amethyst]
-path = "./vendor/amethyst"
 features = ["nightly"]
+path = "./vendor/amethyst"
 
 [dependencies.amethyst_animation]
 path = "./vendor/amethyst/amethyst_animation"
+
+[dependencies.amethyst_config]
+path = "./vendor/amethyst/amethyst_config"
 
 [dependencies.amethyst_core]
 path = "./vendor/amethyst/amethyst_core"

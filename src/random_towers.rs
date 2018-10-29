@@ -6,12 +6,16 @@ use amethyst::core::Time;
 use amethyst::core::{GlobalTransform, Transform};
 use amethyst::ecs::Entity;
 use amethyst::prelude::*;
-use amethyst::renderer::{Camera, Event, KeyboardInput, VirtualKeyCode, WindowEvent};
+use amethyst::renderer::{Camera, Event, KeyboardInput, ElementState, VirtualKeyCode, WindowEvent};
 use amethyst::ui::FontAsset;
 use amethyst::ui::TtfFormat;
 use amethyst::ui::{Anchor, UiText, UiTransform};
 use amethyst::utils::fps_counter::FPSCounter;
 use scene::ScenePrefabData;
+use amethyst::ecs::storage::AnyStorage;
+use amethyst::shred::{MetaTable};
+use std::borrow::Borrow;
+use amethyst::ecs::Join;
 
 pub struct RandomTowers {
     fps_display: Option<Entity>,
@@ -24,17 +28,36 @@ impl RandomTowers {
 }
 
 impl<'a, 'b> State<GameData<'a, 'b>> for RandomTowers {
-    fn handle_event(&mut self, _: StateData<GameData>, event: Event) -> Trans<GameData<'a, 'b>> {
+    fn handle_event(&mut self, state_data: StateData<GameData>, event: Event) -> Trans<GameData<'a, 'b>> {
         match event {
             Event::WindowEvent { event, .. } => match event {
                 WindowEvent::KeyboardInput {
                     input:
                         KeyboardInput {
-                            virtual_keycode: Some(VirtualKeyCode::Escape),
+                            state: ElementState::Pressed,
+                            virtual_keycode: Some(key),
                             ..
                         },
                     ..
-                } => Trans::Quit,
+                } => {
+                    match key {
+                        VirtualKeyCode::Escape => Trans::Quit,
+                        VirtualKeyCode::Period => {
+                            // debug
+                            let world = state_data.world;
+                            let storages = world.read_resource::<MetaTable<AnyStorage>>();
+                            for e in (world.entities()).join() {
+                                debug!("entity {:?}", e);
+                                for storage in storages.iter((*world).borrow()) {
+                                    let comp = storage.get(e);
+                                    debug!("comp {:?}", comp);
+                                }
+                           }
+                            Trans::None
+                        }
+                        _ => Trans::None,
+                    }
+                },
                 _ => Trans::None,
             },
             _ => Trans::None,

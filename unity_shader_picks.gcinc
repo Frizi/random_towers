@@ -1,0 +1,52 @@
+float4 UnityApplyLinearShadowBias (float4 clipPos) {
+	clipPos.z += saturate(unity_LightShadowBias.x / clipPos.w);
+	float clamped = max(clipPos.z, clipPos.w * UNITY_NEAR_CLIP_VALUE);
+	clipPos.z = lerp(clipPos.z, clamped, unity_LightShadowBias.y);
+	return clipPos;
+}
+
+
+float4 UnityClipSpaceShadowCasterPos(float4 vertex, float3 normal)
+{
+    float4 wPos = mul(unity_ObjectToWorld, vertex);
+
+    if (unity_LightShadowBias.z != 0.0)
+    {
+        float3 wNormal = UnityObjectToWorldNormal(normal);
+        float3 wLight = normalize(UnityWorldSpaceLightDir(wPos.xyz));
+
+        // apply normal offset bias (inset position along the normal)
+        // bias needs to be scaled by sine between normal and light direction
+        // (http://the-witness.net/news/2013/09/shadow-mapping-summary-part-1/)
+        //
+        // unity_LightShadowBias.z contains user-specified normal offset amount
+        // scaled by world space texel size.
+
+        float shadowCos = dot(wNormal, wLight);
+        float shadowSine = sqrt(1-shadowCos*shadowCos);
+        float normalBias = unity_LightShadowBias.z * shadowSine;
+
+        wPos.xyz -= wNormal * normalBias;
+    }
+
+    return mul(UNITY_MATRIX_VP, wPos);
+}
+
+float3 UnityObjectToWorldNormal( in float3 norm )
+{
+    return normalize(mul(norm, (float3x3)unity_WorldToObject));
+}
+
+// Computes world space light direction, from world space position
+inline float3 UnityWorldSpaceLightDir( in float3 worldPos )
+{
+    #ifndef USING_LIGHT_MULTI_COMPILE
+        return _WorldSpaceLightPos0.xyz - worldPos * _WorldSpaceLightPos0.w;
+    #else
+        #ifndef USING_DIRECTIONAL_LIGHT
+        return _WorldSpaceLightPos0.xyz - worldPos;
+        #else
+        return _WorldSpaceLightPos0.xyz;
+        #endif
+    #endif
+}

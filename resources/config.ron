@@ -1,0 +1,28 @@
+#![enable(implicit_some)]
+(
+    display: (
+        title: "Random towers",
+        dimensions: (1280, 720),
+        fullscreen: false,
+        multisampling: 0,
+        visibility: true,
+        vsync: true,
+    ),
+    bindings: (
+        axes: {
+            "move_x": (
+                pos: Key(D),
+                neg: Key(A),
+            ),
+            "move_y": (
+                pos: Key(E),
+                neg: Key(Q),
+            ),
+            "move_z": (
+                pos: Key(S),
+                neg: Key(W),
+            )
+        },
+        actions: {},
+    )
+)

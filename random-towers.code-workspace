@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "/Applications/Unity/Hub/Editor/2018.2.0b7/Unity.app/Contents/CGIncludes"
+		},
+		{
+			"path": "vendor/amethyst"
+		}
+	],
+	"settings": {}
+}

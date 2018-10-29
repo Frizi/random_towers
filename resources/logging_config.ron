@@ -1,0 +1,11 @@
+#![enable(implicit_some)]
+[(
+    file_path: "random-towers.log",
+    level: "debug"
+), (
+    level: "warn"
+),(
+    file_path: "random-towers-trace.log",
+    level: "trace",
+    modules: ["amethyst_gltf", "amethyst_assets", "amethyst_renderer", "random_towers"],
+)]

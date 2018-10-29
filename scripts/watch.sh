@@ -14,7 +14,7 @@ try_all
 
 while true; do
     sleep 1;
-    ls -d $BLEND_BASE/**.blend | entr -d ./scripts/blender_export_gltf.sh /_ "$BLEND_BASE" "$GLTF_BASE"
+    ls -d $BLEND_BASE/**.blend | entr -p -d ./scripts/blender_export_gltf.sh /_ "$BLEND_BASE" "$GLTF_BASE"
     try_all
 done
 

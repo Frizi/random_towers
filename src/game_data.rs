@@ -1,12 +1,11 @@
 use amethyst::animation::{AnimationBundle, VertexSkinningBundle};
 use amethyst::assets::PrefabLoaderSystem;
-use amethyst::config::Config;
 use amethyst::controls::FlyControlBundle;
 use amethyst::core::transform::TransformBundle;
 use amethyst::core::Transform;
 use amethyst::input::InputBundle;
 use amethyst::renderer::{
-    ColorMask, DepthMode, DisplayConfig, DrawPbmSeparate, Pipeline, RenderBundle, Stage, ALPHA,
+    ColorMask, DepthMode, DrawPbmSeparate, Pipeline, RenderBundle, Stage, ALPHA,
 };
 use amethyst::ui::{DrawUi, UiBundle};
 use amethyst::utils::fps_counter::FPSCounterBundle;
@@ -15,8 +14,10 @@ use amethyst::Result;
 use amethyst_gltf::GltfSceneLoaderSystem;
 use scene::ScenePrefabData;
 use systems::*;
+use game_config::GameConfig;
 
-pub fn setup_game_data<'a, 'b>() -> Result<GameDataBuilder<'a, 'b>> {
+pub fn setup_game_data<'a, 'b>(config: GameConfig) -> Result<GameDataBuilder<'a, 'b>> {
+
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()
             .clear_target([0.0, 0.0, 0.0, 1.0], 1.0)
@@ -35,16 +36,15 @@ pub fn setup_game_data<'a, 'b>() -> Result<GameDataBuilder<'a, 'b>> {
         // rendering
         .with_bundle(RenderBundle::new(
             pipe,
-            Some(DisplayConfig::load(&"./resources/display_config.ron")),
-        ))?
+            Some(config.display)),
+        )?
         .with_bundle(
             AnimationBundle::<usize, Transform>::new("animation_control", "sampler_interpolation")
                 .with_dep(&["gltf_loader"]),
         )?
         // input
         .with_bundle(
-            InputBundle::<String, String>::new()
-                .with_bindings_from_file("./resources/bindings_config.ron"),
+            InputBundle::<String, String>::new().with_bindings(config.bindings),
         )?
         .with_bundle(
             FlyControlBundle::<String, String>::new(
